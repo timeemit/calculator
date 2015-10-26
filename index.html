@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+  <meta charset='utf-8'>
+  <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+  <meta name='viewport' content='width=device-width, initial-scale=1'>
+  <title>Digit Converter</title>
+  <!-- Pure CSS -->
+  <link rel='stylesheet' href='css/pure-min.css'>
+  <link rel='stylesheet' href='css/pure-grid.css'>
+  <style>
+    body { 
+      margin: 0 20px;
+    }
+
+    #header {
+      padding: 20px 0;
+    }
+
+    .centered {
+      max-width: 500px;
+      margin: 0 auto;
+    }
+
+    #errors{
+      display: none;
+      background-color: #F06292;
+      padding: 20px 0;
+    }
+
+    .number-input{
+      padding: 20px 0;
+    }
+
+    #binary:hover {
+      background-color: #80CBC4;
+    }
+    #decimal:hover {
+      background-color: #FFAB91;
+    }
+    #hex:hover {
+      background-color: #64B5F6;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div id='header'>
+    <h1 class='centered'>Base Converter</h1>
+  </div>
+
+  <hr>
+
+  <div id='errors'></div>
+
+  <div id='inputs' class='pure-form pure-form-aligned'>
+    <div class='centered'>
+      <fieldset>
+
+        <div id='binary' class='number-input'>
+          <div class='pure-control-group'>
+            <label for='binary'><strong>Binary</strong></label>
+            <input name='binary' placeholder='10011010010' autofocus>
+          </div>
+        </div>
+
+        <div id='decimal' class='number-input'>
+          <div class='pure-control-group'>
+            <label for='decimal'><strong>Decimal</strong></label>
+            <input name='decimal' placeholder='1234'>
+          </div>
+        </div>
+
+        <div id='hex' class='number-input'>
+          <div class='pure-control-group'>
+            <label for='hex'><strong>Hex</strong></label>
+            <input name='hex' placeholder='4d2'>
+          </div>
+        </div>
+      </fieldset>
+    </div>
+  </div>
+
+  <!-- jQuery -->
+  <script src='javascript/jquery-2.1.1.min.js'></script>
+  <script>
+    $(function(){
+      var clearErrors = function() { 
+        $('#errors').slideUp({
+          complete: function(){ $(this).empty() }
+        }); 
+      };
+
+      var showErrors = function(message) {
+        $('#errors').html('<h3 class="centered">' + message + '</h3>').slideDown();
+      };
+
+      $('#binary input').keyup(function(e){
+        var binaryString = String( e.target.value );
+        var binaryRegEx = /^[01]+$/;
+
+        if ( binaryRegEx.exec( binaryString ) ) {
+          var decimal = parseInt( binaryString, 2 );
+          var hex = decimal.toString( 16 );
+
+          clearErrors();
+
+          $('#decimal input').val(decimal);
+          $('#hex input').val(hex);
+        } else if ( binaryString !== '' ){
+          showErrors("Binary consists of only 0's and 1's");
+        }
+        return true;
+      });
+
+      $('#hex input').keyup(function(e){
+        var hexString = String( e.target.value );
+        var hexRegEx = /^[0-9a-fA-F]+$/;
+
+        if ( hexRegEx.exec( hexString ) ) {
+          var decimal = parseInt( hexString, 16 );
+          var binary = decimal.toString( 2 );
+
+          clearErrors();
+
+          $('#decimal input').val(decimal);
+          $('#binary input').val(binary);
+        } else if ( hexString !== '' ){
+          showErrors("Not a hex digit consisting of 0-9 or A-F");
+        }
+        return true;
+      });
+
+      $('#decimal').keyup(function(e){
+        var decimalString = String( e.target.value );
+        var decimalRegEx = /^\d+$/;
+
+
+        if ( decimalRegEx.exec( decimalString ) ) {
+          var decimal = parseInt( decimalString );
+          var binary = decimal.toString( 2 );
+          var hex = decimal.toString( 16 );
+
+          clearErrors();
+
+          $('#hex input').val(hex);
+          $('#binary input').val(binary);
+        } else if ( decimalString !== '' ){
+          showErrors("Not a decimal digit consisting of 0-9");
+        }
+        return true;
+      });
+    });
+  </script>
+</body>
+</html>
