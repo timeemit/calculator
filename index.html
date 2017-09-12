@@ -9,7 +9,7 @@
   <link rel='stylesheet' href='css/pure-min.css'>
   <link rel='stylesheet' href='css/pure-grid.css'>
   <style>
-    body { 
+    body {
       margin: 0 20px;
     }
 
@@ -86,10 +86,10 @@
   <script src='javascript/jquery-2.1.1.min.js'></script>
   <script>
     $(function(){
-      var clearErrors = function() { 
+      var clearErrors = function() {
         $('#errors').slideUp({
           complete: function(){ $(this).empty() }
-        }); 
+        });
       };
 
       var showErrors = function(message) {
@@ -129,6 +129,7 @@
         } else if ( hexString !== '' ){
           showErrors("Not a hex digit consisting of 0-9 or A-F");
         }
+
         return true;
       });
 
